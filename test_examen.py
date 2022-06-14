@@ -1,6 +1,11 @@
-import csv
-def read_data():
-    dictionary = {
+from main import *
+import pytest
+
+#Para ejecutar solo uno de los 3:
+#python -m pytest -k "test_encontrar_menores"
+
+def test_get_name_description():
+    diccionario={
     '1020': {'description': 'PSEG ALAMEDA 14 (DAVANT JARDÍ VIA CENTRAL) - VALÈNCIA',
              'id': '1020',
              'lat': '4372694.493',
@@ -151,59 +156,14 @@ def read_data():
              'lat': '4373073.313'}
     }
 
-    return dictionary
+    #comprobamos que las palabras con letras anteriores a 'B' son las siguientes
+    lista=get_name_description("1020", diccionario)
+    assert lista == ('Albereda', 'PSEG ALAMEDA 14 (DAVANT JARDÍ VIA CENTRAL) - VALÈNCIA')
 
-def get_name_description(key, dictionary):
-    if dictionary.get(key) == None:
-        raise ValueError("No existe")
-    name = dictionary[key]["name"]
-    description = dictionary[key]["description"]
-    print("El nombre es " + name + "y la descripción es " + description)
+    lista=get_name_description("1000", diccionario)
 
-    return name, description
-
-def search_by_lon(longitud, dictionary):
-    if type(longitud) != float:
-        raise ValueError("No es de tipo float")
-    for i in dictionary.keys():
-        if dictionary[i]["lon"] == longitud:
-            print("La clave que contiene la longitud es " + str(i))
-            return i
-   
-    raise ValueError("No existe")
-
-def get_min(key, dictionary):
-    lista = []
-    for i in dictionary.keys():
-        if i < key:
-            lista.append({i: {"description": dictionary[i]["description"], name: dictionary[i]["name"]}})
-    if len(lista) == 0:
-        raise ValueError("No hay elementos")
-    return lista
-
-
-if __name__ == "__main__":
-    dic = read_data()
-    try:
-        
-        #print(dic["1020"])
-        name, description = get_name_description("1020", dic)
-        name, description = get_name_description("1019", dic)
-        
-    except:
-        print("Ha saltado error")
-
-    try:
-        key = search_by_lon(727104.081, dic)
-        key = search_by_lon(1, dic)
-    except:
-        print("Error de clave")
-
-    try:
-        lista = get_min("1023", dic)
-        print(lista)
-        lista = get_min("100", dic)
-    except:
-        print("Ha saltado error")
+    with pytest.raises(ValueError) as exc:
+        get_name_description.exception(True)
+    assert "No existe" == str(exc.value)
 
    
