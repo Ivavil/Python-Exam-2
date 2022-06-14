@@ -227,5 +227,6 @@ if __name__ == "__main__":
         print("Ha saltado error")
 
     stop_object =convert_to_object("1020", dic)
+    stop_object.to_string()
 
    
