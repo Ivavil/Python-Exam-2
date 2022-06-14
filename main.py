@@ -1,4 +1,24 @@
 import csv
+
+class Stop:
+  def __init__(self, id, name, description, lat, lon):
+    self.__id = id 
+    self.__name = name 
+    self.__description = description 
+    self.__lat = lat
+    self.__lon = lon 
+
+  def to_string(self): 
+    to_string = "La id es ",str(self.__id) + ",la el nombre es " + self.__name,"La descripcion es " + str(self.__description), "La latitud es " + str(self.__lat), "La longitud es " + str(self.__lon)
+    return to_string
+
+def convert_to_object(key, dictionary): 
+    value = dictionary[key]
+    stop_object = Stop(value["id"], value["name"], value["description"], value["lat"], value["lon"])
+
+    return stop_object
+
+
 def read_data():
     dictionary = {
     '1020': {'description': 'PSEG ALAMEDA 14 (DAVANT JARDÍ VIA CENTRAL) - VALÈNCIA',
@@ -176,7 +196,7 @@ def get_min(key, dictionary):
     lista = []
     for i in dictionary.keys():
         if i < key:
-            lista.append({i: {"description": dictionary[i]["description"], name: dictionary[i]["name"]}})
+            lista.append({i: {"description": dictionary[i]["description"], "name": dictionary[i]["name"]}})
     if len(lista) == 0:
         raise ValueError("No hay elementos")
     return lista
@@ -205,5 +225,7 @@ if __name__ == "__main__":
         lista = get_min("100", dic)
     except:
         print("Ha saltado error")
+
+    stop_object =convert_to_object("1020", dic)
 
    
